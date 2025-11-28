@@ -8,7 +8,7 @@ export const activityCategoryEnum = t.Enum({
 
 export const createActivityBodySchema = t.Object({
   category: activityCategoryEnum,
-  type: t.String(),
+  type: t.Optional(t.String()),
   value: t.Number(),
   date: t.String(),
   imageUrl: t.Optional(t.String()),
@@ -31,3 +31,9 @@ export type CreateActivityBody = Static<typeof createActivityBodySchema>
 export type ActivitiesQuery = Static<typeof activitiesQuerySchema>
 export type UpdateActivityParams = Static<typeof updateActivityParamsSchema>
 export type UpdateActivityBody = Static<typeof updateActivityBodySchema>
+
+export const updateActivityTypeBodySchema = t.Object({
+  type: t.String(),
+})
+
+export type UpdateActivityTypeBody = Static<typeof updateActivityTypeBodySchema>

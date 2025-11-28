@@ -1,15 +1,17 @@
 import { Elysia } from "elysia"
 import { type AuthenticatedUser, unauthorizedBody } from "../../middlewares/auth"
-import { createActivity, getActivitiesByDate , updateActivity } from "./activities.service"
+import { createActivity, getActivitiesByDate , updateActivity, updateActivityType } from "./activities.service"
 import {
   activitiesQuerySchema,
   createActivityBodySchema,
   updateActivityBodySchema,
   updateActivityParamsSchema,
+  updateActivityTypeBodySchema,
   type ActivitiesQuery,
   type CreateActivityBody,
   type UpdateActivityBody,
   type UpdateActivityParams,
+  type UpdateActivityTypeBody,
 } from "./activities.schema"
 
 
@@ -57,5 +59,20 @@ export const activitiesController = new Elysia({ prefix: "/activities" })
     {
       params: updateActivityParamsSchema,
       body: updateActivityBodySchema,
+    }
+  )
+
+  .patch(
+    "/:id/type",
+    async ({ params, body, user, set }: { params: UpdateActivityParams; body: UpdateActivityTypeBody; user?: AuthenticatedUser; set: any }) => {
+      if (!user) {
+        set.status = 401
+        return unauthorizedBody
+      }
+      return await updateActivityType(params.id, body, user)
+    },
+    {
+      params: updateActivityParamsSchema,
+      body: updateActivityTypeBodySchema,
     }
   )

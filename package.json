@@ -7,10 +7,14 @@
   },
   "dependencies": {
     "@elysiajs/cors": "^1.4.0",
+    "@google-cloud/storage": "^7.17.3",
+    "@line/bot-sdk": "^10.5.0",
     "@prisma/adapter-pg": "^7.0.0",
     "@prisma/client": "^7.0.0",
+    "body-parser": "^1.20.3",
     "dotenv": "^17.2.3",
     "elysia": "^1.1.0",
+    "express": "^4.21.1",
     "jsonwebtoken": "^9.0.2",
     "pg": "^8.16.3"
   },

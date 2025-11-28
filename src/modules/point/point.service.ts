@@ -3,7 +3,7 @@ import { prisma } from "../db/prisma"
 
 const DAILY_POINT = 10
 
-const DEV_MODE_POINTS = true
+const DEV_MODE_POINTS = false
 
 export async function evaluatePoints(user: any) {
     const today = new Date()

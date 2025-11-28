@@ -1,14 +1,16 @@
 import { prisma } from "../db/prisma"
 import { type AuthenticatedUser } from "../../middlewares/auth"
-import { type CreateActivityBody } from "./activities.schema"
+import { type CreateActivityBody, type UpdateActivityTypeBody } from "./activities.schema"
 
 export async function createActivity(body: CreateActivityBody, user: AuthenticatedUser) {
   const { category, type, value, date, imageUrl, slipUrl } = body
 
+  const resolvedType = type?.trim() || "PENDING_IMAGE"
+
   const activity = await prisma.activity.create({
     data: {
       category,
-      type,
+      type: resolvedType,
       value,
       date: new Date(date),
       imageUrl,
@@ -87,5 +89,30 @@ export async function updateActivity(activityId: string , co2: number, user:any)
     success: true,
     message : "Activity updated",
     activity : updated
+  }
+}
+
+export async function updateActivityType(activityId: string, body: UpdateActivityTypeBody, user: AuthenticatedUser) {
+  const existing = await prisma.activity.findUnique({
+    where: { id: activityId },
+  })
+
+  if (!existing || existing.userId !== user.userId) {
+    return {
+      success: false,
+      message: "Activity not found",
+      status: 404,
+    }
+  }
+
+  const updated = await prisma.activity.update({
+    where: { id: activityId },
+    data: { type: body.type.trim() },
+  })
+
+  return {
+    success: true,
+    message: "Activity type updated",
+    activity: updated,
   }
 }
